@@ -35,7 +35,7 @@ void draw() {
 void DrawPacman() {
     fill(248, 255, 13);
     for (int k=0 ; k<posX.size() ; k++) {
-        rect(posX.get(k)*squareSize, posY.get(k)*squareSize, squareSize, squareSize);
+        ellipse(posX.get(k)*squareSize, posY.get(k)*squareSize, squareSize, squareSize);
       }
   }
 
