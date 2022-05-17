@@ -1,5 +1,5 @@
-int filas = 40;
-int columnas = 40;
+int filas = height;
+int columnas = width;
 int squareSize = 20;
 PImage fondo;
 
@@ -44,11 +44,24 @@ void draw() {
     } 
     println("X: " +mouseX+ " Y: " +mouseY);
     println("Posicion de la cabeza: " +posX.get(0));
+    
+    if ((posX.get(0) < 0 || posX.get(0) >= 12.2)) {
+        posX.add(0, posX.get(0)-dx[dir]);
+        posY.add(0, posY.get(0)-dy[dir]);
+        posX.remove(posX.size() - 1);
+        posY.remove(posY.size() - 1);
+        if (keyPressed && keyCode==CODED) {
+            if (key == 'w' || keyCode == UP) dir = 0;
+            if (key == 's' || keyCode == DOWN) dir = 1;
+            if (key == 'a' || keyCode == LEFT) dir = 2;
+            if (key == 'd' || keyCode == RIGHT) dir = 3;
+          }
+      }
     move();
     eatBall();
     DrawPacman();
     drawBolita();
-    detectarMuros();
+    //detectarMuros();
   }
 
 void DrawPacman() {
@@ -67,8 +80,8 @@ void move() {
   
 void eatBall() {
     if ((posX.get(0) == bolitaX) && (posY.get(0) == bolitaY)) {
-          bolitaX = (int)random(0, 40);
-          bolitaY = (int)random(0, 40);
+          bolitaX = (int)random(0, columnas);
+          bolitaY = (int)random(0, filas);
       }
   }
 void keyPressed(){
