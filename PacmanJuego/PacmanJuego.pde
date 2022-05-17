@@ -10,6 +10,8 @@ ArrayList<Integer> posY = new ArrayList<Integer>();
 int dir = 1;
 int [] dx = {0, 0, -1, 1}; // En el eje X solo puede ir de izq a derecha
 int [] dy = {-1, 1, 0, 0}; // En el eje Y solo puede ir de arriba a abajo
+int bolitaX;
+int bolitaY;
 
 boolean gameOver = false;
 
@@ -19,8 +21,20 @@ void setup() {
     frameRate(5);
     posX.add(10);   // Indica que comenzara el pacman en la posicion <10, 10>
     posY.add(10);   
+    bolitaX = (int)random(0, 40);
+    bolitaY = (int)random(0, 40);
   }
   
+void detectarMuros() {
+    if ((posX.get(0) < 0 || posX.get(0) > columnas - 6)) {
+        posX.add(posX.get(0), height -6); // Esto se detiene pero arroja un error, el posX.get(0) es la posicion donde se encuentra el pacman, la cabeza por asi decirlo
+      }
+  }
+  
+void drawBolita() {
+    fill(255, 255, 255);
+    ellipse(bolitaX*squareSize, bolitaY*squareSize, squareSize, squareSize);
+  }
   
 void draw() {
     background(fondo);
@@ -28,8 +42,13 @@ void draw() {
     if (gameOver == true) {
       //Texto Inicio
     } 
+    println("X: " +mouseX+ " Y: " +mouseY);
+    println("Posicion de la cabeza: " +posX.get(0));
     move();
+    eatBall();
     DrawPacman();
+    drawBolita();
+    detectarMuros();
   }
 
 void DrawPacman() {
@@ -39,13 +58,19 @@ void DrawPacman() {
       }
   }
 
-void move() {
+void move() {  
     posX.add(0, posX.get(0)+dx[dir]);
     posY.add(0, posY.get(0)+dy[dir]);
     posX.remove(posX.size() - 1);
     posY.remove(posY.size() - 1);
   }
   
+void eatBall() {
+    if ((posX.get(0) == bolitaX) && (posY.get(0) == bolitaY)) {
+          bolitaX = (int)random(0, 40);
+          bolitaY = (int)random(0, 40);
+      }
+  }
 void keyPressed(){
     if (key == 'w' || keyCode == UP) dir = 0;
     if (key == 's' || keyCode == DOWN) dir = 1;
